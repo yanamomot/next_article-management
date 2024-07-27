@@ -7,6 +7,7 @@ import { testURL } from "../helper/isValidUrl";
 import { Banner } from "./Banner";
 import { useStore } from "@/store/store";
 
+
 type Props = {
   article?: Article | null;
 };
@@ -74,11 +75,14 @@ export const Form: React.FC<Props> = ({ article }) => {
       if (article) {
         await updateItem(title, description, url, article.id);
         setError('');
-        setSuccess("Item was updated successfully :)");
+        setSuccess("Updated successfully :)");
+        setTimeout(() => {
+          router.push("/admin-panel");
+        }, 400);
       } else {
         await createItem(title, description, url);
         setError('');
-        setSuccess("Item was created successfully :)");
+        setSuccess("Created successfully :)");
       }
     } catch (err) {
       setSuccess('');

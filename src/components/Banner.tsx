@@ -19,10 +19,10 @@ export const Banner: React.FC<Props> = ({
     >
       <div className="flex justify-center items-center">
         {error && (
-        <p className="pr-10 p-3">{error}</p>
+        <p className="p-7 pr-3 pl-3 mb-0">{error}</p>
         )}
         {success && (
-        <p className="pr-10 p-3">{success}</p>
+        <p className="p-7 pr-3 pl-3 mb-0">{success}</p>
         )}
 
         <button
@@ -30,7 +30,7 @@ export const Banner: React.FC<Props> = ({
           onClick={() => (error ? setError!("") : setSuccess!(""))}
         >
           <svg
-            className="w-5 h-5 ml-10 "
+            className="w-5 h-5 ml-5 "
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
