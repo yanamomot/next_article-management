@@ -54,7 +54,7 @@ export default function AdminPanel() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen ">
         <div className="flex-grow">
           <div className="p-6 max-w-screen-xl mx-auto">
             <h1 className="text-3xl font-bold mb-3">Articles</h1>
@@ -115,7 +115,7 @@ export default function AdminPanel() {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap items-center justify-center space-x-4 mt-2 mb-10">
+        <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-center space-x-4 mt-2 mb-10">
           {Array.from(
             { length: Math.ceil(filtered.length / itemsPerPage) },
             (_, i) => i + 1

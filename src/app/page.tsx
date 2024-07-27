@@ -108,7 +108,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap items-center justify-center space-x-4 mt-2 mb-10">
+        <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-center space-x-4 mt-2 mb-10">
           {Array.from(
             { length: Math.ceil(filtered.length / itemsPerPage) },
             (_, i) => i + 1
