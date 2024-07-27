@@ -5,6 +5,7 @@ import { useStore } from "../store/store";
 import { ArticleItem } from "../components/Article";
 import { SortBy } from "@/types/Sort&Filter";
 import { filter } from "../helper/filter";
+import { Header } from "@/components/Header";
 
 export default function HomePage() {
   const { articles, fetch } = useStore();

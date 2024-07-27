@@ -7,6 +7,7 @@ import { ArticleItem } from "../../components/Article";
 import { SortBy } from "@/types/Sort&Filter";
 import { filter } from "../../helper/filter";
 import Link from "next/link";
+import { Header } from "@/components/Header";
 
 export default function AdminPanel() {
   const { articles, fetch } = useStore();
