@@ -15,9 +15,9 @@ export const ArticleItem: React.FC<Props> = ({ item, isAdmin }) => {
   return (
     <div className="border border-gray-400 rounded-lg p-4 m-1 flex flex-col justify-between h-full">
       <div>
-        <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+        <h3 className="text-lg font-bold mb-2 break-words">{item.title}</h3>
         <p className="text-gray-600 mb-4">{item.published}</p>
-        <p className="text-gray-600 mb-2">{item.description}</p>
+        <p className="text-gray-600 mb-2 break-words">{item.description}</p>
       </div>
       <div className="flex justify-between items-end">
         <a href={item.url} className="text-blue-500 hover:underline mt-auto">

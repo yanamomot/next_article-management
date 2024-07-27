@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useStore } from "../../store/store";
 import { ArticleItem } from "../../components/Article";
@@ -33,7 +33,7 @@ export default function AdminPanel() {
     setSortBy(selectedCategory);
   };
 
-  const total = normalized.length;
+  const total = useMemo(() => articles.length, [articles]);
   const filtered = filter(normalized, { sortBy, query });
 
   const paginatedItems = useMemo(() => {
