@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { useStore } from "../store/store";
-import { ArticleItem } from "../components/Article";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { useStore } from "../../store/store";
+import { ArticleItem } from "../../components/Article";
 import { SortBy } from "@/types/Sort&Filter";
-import { filter } from "../helper/filter";
+import { filter } from "../../helper/filter";
+import Link from "next/link";
 
-export default function HomePage() {
+export default function AdminPanel() {
   const { articles, fetch } = useStore();
   const [sortBy, setSortBy] = useState(SortBy.All);
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     fetch();
@@ -87,18 +89,23 @@ export default function HomePage() {
                   </select>
                 </div>
               </div>
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                type="text"
-                placeholder="Search..."
-                className="p-2 border border-gray-300 rounded-md w-full sm:w-auto"
-              />
+              <div>
+                <Link href={`/admin-panel/create`}>
+                  <i className="bi bi-plus-lg fs-5 me-5 p-2 cursor-pointer bg-green-100 hover:bg-green-200 rounded-md text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-offset-2"></i>
+                </Link>
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  type="text"
+                  placeholder="Search..."
+                  className="p-2 border border-gray-300 rounded-md w-full sm:w-auto mt-10 sm:mt-0"
+                />
+              </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {paginatedItems.length > 0 ? (
                 paginatedItems.map((item) => (
-                  <ArticleItem key={item.id} item={item} />
+                  <ArticleItem key={item.id} item={item} isAdmin={true} />
                 ))
               ) : (
                 <div className="col-span-full text-center text-gray-500">
