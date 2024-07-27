@@ -7,7 +7,6 @@ import { testURL } from "../helper/isValidUrl";
 import { Banner } from "./Banner";
 import { useStore } from "@/store/store";
 
-
 type Props = {
   article?: Article | null;
 };
@@ -52,21 +51,32 @@ export const Form: React.FC<Props> = ({ article }) => {
     setHasTitleError(!title);
     setHasUrlError(!url);
 
-    if (!url || !title) {
+    let titleEmpty = false;
+    let shortTitle = false;
+    let urlEmpty = false;
+    let invalidurl = false;
+
+    if (!title) {
       setTitleErrorMessage("Title must not be empty");
-      setUrlErrorMessage("URL must not be empty");
-      setLoading(false);
-    } else if (title.length < 8) {
-      setTitleErrorMessage("Title should have at least 8 chars");
-      setLoading(false);
-    } 
-    
-    if (!testURL(url)) {
-      setUrlErrorMessage("Please enter a valid URL");
-      setLoading(false);
+      setHasTitleError(true);
+      titleEmpty = true;
+    } else if (title.length <= 8) {
+      setTitleErrorMessage("Title should have at least 8 characters");
+      setHasTitleError(true);
+      shortTitle = true;
     }
 
-    if (!title || !url) {
+    if (!url) {
+      setUrlErrorMessage("URL must not be empty");
+      setHasUrlError(true);
+      urlEmpty = true;
+    } else if (!testURL(url)) {
+      setUrlErrorMessage("Please enter a valid URL");
+      setHasUrlError(true);
+      invalidurl = true;
+    }
+
+    if (invalidurl || urlEmpty || titleEmpty || shortTitle) {
       setLoading(false);
       return;
     }
@@ -74,18 +84,18 @@ export const Form: React.FC<Props> = ({ article }) => {
     try {
       if (article) {
         await updateItem(title, description, url, article.id);
-        setError('');
+        setError("");
         setSuccess("Updated successfully :)");
         setTimeout(() => {
           router.push("/admin-panel");
         }, 400);
       } else {
         await createItem(title, description, url);
-        setError('');
+        setError("");
         setSuccess("Created successfully :)");
       }
     } catch (err) {
-      setSuccess('');
+      setSuccess("");
       setError("Something went wrong :(");
     } finally {
       reset();
@@ -175,7 +185,7 @@ export const Form: React.FC<Props> = ({ article }) => {
                   }
                 )}
                 type="text"
-                placeholder="Enter title"
+                placeholder="Enter URL"
                 value={url}
                 onChange={handleUrlChange}
               />
