@@ -2,15 +2,18 @@ import { Article } from "@/types/Article";
 import classNames from "classnames";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createItem, updateItem, BASE_URL } from "../api/api";
+// import { createItem, updateItem, BASE_URL } from "../api/api";
 import { testURL } from "../helper/isValidUrl";
 import { Banner } from "./Banner";
+import { useStore } from "@/store/store";
 
 type Props = {
   article?: Article | null;
 };
 
 export const Form: React.FC<Props> = ({ article }) => {
+  const { createItem, updateItem } = useStore();
+
   const [title, setTitle] = useState(article?.title || "");
   const [hasTitleError, setHasTitleError] = useState(false);
   const [titleErrorMessage, setTitleErrorMessage] = useState("");
@@ -69,11 +72,11 @@ export const Form: React.FC<Props> = ({ article }) => {
 
     try {
       if (article) {
-        await updateItem({ title, description, url, id: article.id });
+        await updateItem(title, description, url, article.id);
         setError('');
         setSuccess("Item was updated successfully :)");
       } else {
-        await createItem({ title, description, url });
+        await createItem(title, description, url);
         setError('');
         setSuccess("Item was created successfully :)");
       }
