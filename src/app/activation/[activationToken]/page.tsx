@@ -21,7 +21,7 @@ const ActivationPage = () => {
         Activation successful! 🎉
         </h1>
         <div className="text-center">
-            <span className="text-lg text-green-600">Your account is now active</span>
+            <span className="text-lg text-green-600">Your account is now active <br /> Please Sign up</span>
         </div>
       </div>
     </div>

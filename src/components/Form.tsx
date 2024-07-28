@@ -2,8 +2,7 @@ import { Article } from "@/types/Article";
 import classNames from "classnames";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-// import { createItem, updateItem, BASE_URL } from "../api/api";
-import { testURL } from "../helper/isValidUrl";
+import { testURL } from "../helper/isValid";
 import { Banner } from "./Banner";
 import { useStore } from "@/store/store";
 

@@ -1,5 +1,5 @@
 const { createServer } = require('./server');
-const { sequelize } = require('./models/Article.model');
+const sequelize = require('./db/db');
 const { fetchAndSaveArticles } = require('./utils/rssFeedService');
 
 createServer().listen(5700, () => {

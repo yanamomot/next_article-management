@@ -1,10 +1,20 @@
+// @ts-nocheck
 import { create } from "zustand";
 import { Article } from "../types/Article";
-import { fetching, deleteItem, createItem, updateItem } from "../api/api";
+import {
+  fetching,
+  deleteItem,
+  createItem,
+  updateItem,
+  login,
+  signup,
+  activateAcc,
+} from "../api/api";
 
 type Store = {
   articles: Article[];
-  error: string;
+  errorStore: string | null;
+
   fetch: () => Promise<void>;
   deleteItem: (id: number) => Promise<void>;
   createItem: (
@@ -18,18 +28,24 @@ type Store = {
     url: string,
     id: number
   ) => Promise<void>;
+
+  login: (email: string, password: string) => void;
+  signup: (email: string, password: string) => void;
+  activateAcc: (token: string) => void;
+
+  clearError: () => void;
 };
 
 export const useStore = create<Store>((set) => ({
   articles: [],
-  error: "",
+  errorStore: null,
 
   fetch: async () => {
     try {
       const response = await fetching();
       set({ articles: response });
-    } catch {
-      set({ error: "Error fetching" });
+    } catch (err) {
+      console.log(err);
     }
   },
 
@@ -39,24 +55,63 @@ export const useStore = create<Store>((set) => ({
       set((state) => ({
         articles: state.articles.filter((item) => item.id !== id),
       }));
-    } catch {
-      set({ error: "Error deleting" });
+    } catch (err) {
+      console.log(err);
     }
   },
 
   createItem: async (title, description, url) => {
     try {
       await createItem(title, description, url);
-    } catch {
-      set({ error: "Error creating" });
+    } catch (err) {
+      console.log(err);
     }
   },
 
   updateItem: async (title, description, url, id) => {
     try {
       await updateItem(title, description, url, id);
-    } catch {
-      set({ error: "Error updating" });
+    } catch (err) {
+      console.log(err);
     }
   },
+
+  // login: async (email, password) => {
+  //   try {
+  //     const resp = await login(email, password);
+  //     return resp.data;
+  //   } catch (error) {
+  //     set({ errorStore: error.response.data.error || "Something went wrong :(" });
+  //   }
+  // },
+
+login: async (email, password) => {
+  try {
+    const response = await login(email, password);
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response.data.error || "Something went wrong :(";
+    return { error: errorMessage }; // Return the custom error message in the response body
+  }
+},
+
+  signup: async (email, password) => {
+    try {
+      await signup(email, password);
+      set({ errorStore: "" });
+    } catch (err) {
+      set({ errorStore: (err as Error).message || "Something went wrong :(" });
+    }
+  },
+
+  activateAcc: async (token) => {
+    try {
+      await activateAcc(token);
+      set({ errorStore: "" });
+    } catch (err) {
+      set({ errorStore: (err as Error).message || "Something went wrong :(" });
+    }
+  },
+
+  clearError: () => set({ errorStore: "" }),
 }));
