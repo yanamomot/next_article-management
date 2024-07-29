@@ -32,8 +32,6 @@ type Store = {
   login: (email: string, password: string) => void;
   signup: (email: string, password: string) => void;
   activateAcc: (token: string) => void;
-
-  clearError: () => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -76,42 +74,36 @@ export const useStore = create<Store>((set) => ({
     }
   },
 
-  // login: async (email, password) => {
-  //   try {
-  //     const resp = await login(email, password);
-  //     return resp.data;
-  //   } catch (error) {
-  //     set({ errorStore: error.response.data.error || "Something went wrong :(" });
-  //   }
-  // },
-
-login: async (email, password) => {
-  try {
-    const response = await login(email, password);
-    return response.data;
-  } catch (error) {
-    const errorMessage = error.response.data.error || "Something went wrong :(";
-    return { error: errorMessage }; // Return the custom error message in the response body
-  }
-},
+  login: async (email, password) => {
+    try {
+      const response = await login(email, password);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response.data.error || "Something went wrong :(";
+      return { error: errorMessage };
+    }
+  },
 
   signup: async (email, password) => {
     try {
-      await signup(email, password);
-      set({ errorStore: "" });
-    } catch (err) {
-      set({ errorStore: (err as Error).message || "Something went wrong :(" });
+      const response = await signup(email, password);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response.data.message || "Something went wrong :(";
+      return { error: errorMessage };
     }
   },
 
   activateAcc: async (token) => {
     try {
-      await activateAcc(token);
-      set({ errorStore: "" });
-    } catch (err) {
-      set({ errorStore: (err as Error).message || "Something went wrong :(" });
+      const response = await activateAcc(token);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response.data.error || "Something went wrong :(";
+      return { error: errorMessage };
     }
   },
-
-  clearError: () => set({ errorStore: "" }),
 }));

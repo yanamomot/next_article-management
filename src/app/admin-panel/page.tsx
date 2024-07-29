@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useStore } from "../../store/store";
 import { ArticleItem } from "../../components/Article";
 import { SortBy } from "@/types/Sort&Filter";
 import { filter } from "../../helper/filter";
 import Link from "next/link";
-import { Header } from "@/components/Header";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function AdminPanel() {
   const { articles, fetch } = useStore();
@@ -15,10 +16,29 @@ export default function AdminPanel() {
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   fetch();
+  // }, [fetch]);
 
   useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await axios.get('http://localhost:5700/protected/admin', { withCredentials: true }); // Ensure withCredentials is true to include cookies
+        setIsAuthenticated(true);
+      } catch (err) {
+        console.error('Auth check failed:', err);
+        router.push('/login'); // Redirect to login if not authenticated
+      }
+    };
+
+    checkAuth();
     fetch();
-  }, [fetch]);
+  }, [fetch, router]);
 
   const normalized = articles.map((item) => ({
     id: item.id,
@@ -55,6 +75,8 @@ export default function AdminPanel() {
 
   return (
     <>
+    {isAuthenticated && (
+
       <div className="flex flex-col min-h-screen ">
         <div className="flex-grow">
           <div className="p-6 max-w-screen-xl mx-auto">
@@ -134,6 +156,7 @@ export default function AdminPanel() {
           ))}
         </div>
       </div>
+    )}
     </>
   );
 }

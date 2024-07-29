@@ -16,7 +16,7 @@ const signup = async (req, res) => {
   if (isExist) {
     return res
       .status(400)
-      .send({ message: "The user for this email already exists" });
+      .send({ error: "The user for this email already exists" });
   }
 
   const activationToken = `${uuidv4()}${uuidv4()}${uuidv4()}${uuidv4()}`;
@@ -37,7 +37,7 @@ const activate = async (req, res) => {
   if (!client) {
     return res
       .status(404)
-      .send({ message: "The user for this email not found :(" });
+      .send({ error: "The user for this email not found :(" });
   }
 
   client.activationToken = null;
@@ -56,6 +56,10 @@ const login = async (req, res) => {
     return res
       .status(400)
       .send({ error: "The user for this email not found :(" });
+  }
+
+  if (client.activationToken) {
+    return res.status(400).send({ error: "You must verify your account" });
   }
 
   const isPasswordValid = await bcrypt.compare(password, client.password);
@@ -78,7 +82,7 @@ const refresh = async (req, res) => {
   const token = await tokenServise.getByToken(refreshToken);
 
   if (!userData || !token) {
-    return res.status(401).send({ message: "Please register to gain access" });
+    return res.status(401).send({ error: "Please register to gain access" });
   }
 
   const user = await authService.getOneBy("email", userData.email);

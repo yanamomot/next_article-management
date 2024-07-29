@@ -5,7 +5,7 @@ require('dotenv/config');
 const sign = async (client) => {
   try {
     const token = await jwt.sign(client, process.env.JWT_KEY, {
-      expiresIn: '5s',
+      expiresIn: '1h',
     });
 
     return token;

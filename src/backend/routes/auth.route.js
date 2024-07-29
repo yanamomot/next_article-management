@@ -1,6 +1,7 @@
 const express = require('express');
 const authController = require('../controllers/auth.controller.js');
 const catchError = require('../utils/catchError.js');
+const authMiddleware = require('../utils/authMiddleware.js');
 
 const authRouter = express.Router();
 

@@ -1,8 +1,10 @@
 const express = require("express");
-const cors = require("cors");
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
+
 const articlesRoute = require("./routes/articles.route.js");
 const authRoute = require("./routes/auth.route.js");
+const protectedRoute = require("./routes/protected.route.js");
 
 function createServer() {
   const app = express();
@@ -22,6 +24,7 @@ function createServer() {
   // Routes
   app.use("/", articlesRoute);
   app.use("/", authRoute);
+  app.use("/protected", protectedRoute);
 
   return app;
 }

@@ -88,7 +88,7 @@ export const UserForm = () => {
     
         // reset();
         setTimeout(() => {
-          router.push("/success-login");
+          router.push("/admin-panel");
         }, 400);
       } else {
         const response = await signup(email, password);
@@ -99,62 +99,13 @@ export const UserForm = () => {
     
         // reset();
         setTimeout(() => {
-          router.push("/admin-panel");
+          router.push("/success-login");
         }, 400);
       }
     } catch (error) {
       console.error("An unexpected error occurred:", error);
       setError("An unexpected error occurred");
     }
-    
-// ___________________________________________
-
-    // try {
-    //   if (pathname === "/login") {
-        
-    //     // if (!errorStore) {
-    //     //   await login(email, password);
-    //     //   setError(errorStore);
-    //     //   return;
-    //     // } else {
-    //     //   reset();
-
-    //     //   setTimeout(() => {
-    //     //     router.push("/success-login");
-    //     //   }, 400);
-    //     // }
-
-    //     const response = await login(email, password);
-    //     if (response.error) {
-    //       setError(response.error);
-    //       return;
-    //     } 
-        
-    //       reset();
-    //       setTimeout(() => {
-    //         router.push("/success-login");
-    //       }, 400);
-        
-
-    //   } else {
-    //     await signup(email, password);
-
-    //     if (!errorStore) {
-    //       setError(errorStore);
-    //       return;
-    //     } else {
-    //       reset();
-
-    //       setTimeout(() => {
-    //         router.push("/admin-panel");
-    //       }, 400);
-
-    //     }
-    //   }
-    // } 
-    // catch (error) {
-    //   setError(error.message);
-    // } 
   };
 
   // #region reset
