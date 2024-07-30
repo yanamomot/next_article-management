@@ -1,12 +1,13 @@
 const express = require('express');
 const authController = require('../controllers/auth.controller.js');
 const catchError = require('../utils/catchError.js');
-const authMiddleware = require('../utils/authMiddleware.js');
 
 const authRouter = express.Router();
 
 authRouter.post('/signup', catchError(authController.signup));
 authRouter.post('/login', catchError(authController.login));
+
+authRouter.get('/verify', catchError(authController.verify));
 
 authRouter.get(
   '/activation/:activationToken',

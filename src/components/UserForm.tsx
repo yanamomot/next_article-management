@@ -1,17 +1,20 @@
 // @ts-nocheck
 "use client";
-import { useStore } from "@/store/store";
+import { useStore } from "../store/store";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { testEmail } from "../helper/isValid";
 import { Banner } from "./Banner";
+import { verify } from "../api/api";
 
 export const UserForm = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { login, signup, errorStore, clearError } = useStore();
+  const { login, signup, errorStore, clearError, setisAuthenticated } = useStore();
+
+  console.log("login:", login);
 
   const [email, setEmail] = useState("");
   const [hasEmailError, setHasEmailError] = useState(false);
@@ -21,7 +24,7 @@ export const UserForm = () => {
   const [hasPasswordError, setHasPasswordError] = useState(false);
   const [PasswordErrorMessage, setPasswordErrorMessage] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<null | string>(null);
 
@@ -36,7 +39,7 @@ export const UserForm = () => {
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    setLoading(true);
+    // setLoading(true);
     event.preventDefault();
 
     setHasEmailError(!email);
@@ -68,35 +71,44 @@ export const UserForm = () => {
     }
 
     if (shortPassword || emailEmpty || passwordEmpty) {
-      setLoading(false);
+      // setLoading(false);
       return;
     }
-
 
     // _________________________
 
     try {
-
-      setError('');
+      setError("");
 
       if (pathname === "/login") {
         const response = await login(email, password);
-        if (response && response.error) {
+        console.log("Login response:", response);
+
+        if (response.error) {
           setError(response.error);
           return;
         }
-    
-        // reset();
-        setTimeout(() => {
-          router.push("/admin-panel");
-        }, 400);
+
+        if (response.data) {
+          const verifyResp = await verify();
+          console.log("Verify response:", verifyResp);
+
+          if (verifyResp.status === 200) {
+            setisAuthenticated();
+
+            // reset();
+            setTimeout(() => {
+              router.push("/admin-panel");
+            }, 400);
+          }
+        }
       } else {
         const response = await signup(email, password);
-        if (response && response.error) {
+        if (response.error) {
           setError(response.error);
           return;
         }
-    
+
         // reset();
         setTimeout(() => {
           router.push("/success-login");
@@ -119,7 +131,7 @@ export const UserForm = () => {
     setHasPasswordError(false);
     setPasswordErrorMessage("");
 
-    setLoading(false);
+    // setLoading(false);
     clearError();
   };
 

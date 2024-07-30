@@ -10,16 +10,22 @@ const generateTokens = async (res, user) => {
     const normalizedUser = normalize(user);
     console.log('ok normalize');
 
-    const accessToken = await jwtService.sign(normalizedUser);
+    const accessToken = jwtService.sign(normalizedUser);
     console.log('ok sign');
-    const refreshToken = await jwtService.signRefresh(normalizedUser);
+    const refreshToken = jwtService.signRefresh(normalizedUser);
     console.log('ok signrefresh');
 
     await tokenServise.save(normalizedUser.id, refreshToken);
     console.log('ok save');
 
+    // res.cookie('accessToken', accessToken, {
+    //   httpOnly: true,
+    //   maxAge: 30 * 24 * 60 * 60 * 1000,
+    // });
+    console.log('ok cookie');
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
+      secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     console.log('ok cookie');

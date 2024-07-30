@@ -73,10 +73,12 @@ const login = async (req, res) => {
   return result;
 };
 
-const logout = async () => {};
+// const logout = async () => {
+// };
 
-const refresh = async (req, res) => {
+const verify = async (req, res) => {
   const { refreshToken } = req.cookies;
+  console.log("Verify endpoint hit");
 
   const userData = await jwtService.verifyRefresh(refreshToken);
   const token = await tokenServise.getByToken(refreshToken);
@@ -85,17 +87,32 @@ const refresh = async (req, res) => {
     return res.status(401).send({ error: "Please register to gain access" });
   }
 
-  const user = await authService.getOneBy("email", userData.email);
-
-  const result = await generateTokens(res, user);
-
-  return result;
+  await authService.getOneBy("email", userData.email);
+  return res.status(200).send();
 };
+
+// const refresh = async (req, res) => {
+//   const { refreshToken } = req.cookies;
+
+//   const userData = await jwtService.verifyRefresh(refreshToken);
+//   const token = await tokenServise.getByToken(refreshToken);
+
+//   if (!userData || !token) {
+//     return res.status(401).send({ error: "Please register to gain access" });
+//   }
+
+//   const user = await authService.getOneBy("email", userData.email);
+
+//   const result = await generateTokens(res, user);
+
+//   return result;
+// };
 
 module.exports = {
   signup,
   activate,
   login,
   // logout,
+  verify,
   // refresh,
 };

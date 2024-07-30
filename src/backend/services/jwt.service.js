@@ -2,11 +2,9 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv/config');
 
-const sign = async (client) => {
+const sign = (client) => {
   try {
-    const token = await jwt.sign(client, process.env.JWT_KEY, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign(client, process.env.JWT_KEY);
 
     return token;
   } catch (err) {
@@ -14,9 +12,9 @@ const sign = async (client) => {
   }
 };
 
-const verify = async (token) => {
+const verify = (token) => {
   try {
-    const result = await jwt.verify(token, process.env.JWT_KEY);
+    const result = jwt.verify(token, process.env.JWT_KEY);
 
     return result;
   } catch (err) {
@@ -24,9 +22,9 @@ const verify = async (token) => {
   }
 };
 
-const signRefresh = async (client) => {
+const signRefresh = (client) => {
   try {
-    const token = await jwt.sign(client, process.env.JWT_REFRESH_KEY);
+    const token = jwt.sign(client, process.env.JWT_REFRESH_KEY);
 
     return token;
   } catch (err) {
@@ -34,9 +32,9 @@ const signRefresh = async (client) => {
   }
 };
 
-const verifyRefresh = async (token) => {
+const verifyRefresh = (token) => {
   try {
-    const result = await jwt.verify(token, process.env.JWT_REFRESH_KEY);
+    const result = jwt.verify(token, process.env.JWT_REFRESH_KEY);
 
     return result;
   } catch (err) {

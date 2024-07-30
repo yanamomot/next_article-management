@@ -14,6 +14,9 @@ import {
 type Store = {
   articles: Article[];
   errorStore: string | null;
+  isAuthenticated: boolean;
+
+  setisAuthenticated: () => void;
 
   fetch: () => Promise<void>;
   deleteItem: (id: number) => Promise<void>;
@@ -29,14 +32,20 @@ type Store = {
     id: number
   ) => Promise<void>;
 
-  login: (email: string, password: string) => void;
-  signup: (email: string, password: string) => void;
-  activateAcc: (token: string) => void;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string) => Promise<void>;
+  activateAcc: (token: string) => Promise<void>;
 };
 
 export const useStore = create<Store>((set) => ({
   articles: [],
   errorStore: null,
+
+  isAuthenticated: false,
+
+  setisAuthenticated: () => {
+    set({ isAuthenticated: true });
+  },
 
   fetch: async () => {
     try {
@@ -77,6 +86,7 @@ export const useStore = create<Store>((set) => ({
   login: async (email, password) => {
     try {
       const response = await login(email, password);
+      console.log('res', response)
       return response.data;
     } catch (error) {
       const errorMessage =

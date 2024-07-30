@@ -9,6 +9,8 @@ const apis = {
   login: "login",
   signup: "signup",
   activateAcc: "activation/",
+
+  verify: 'verify',
 };
 
 export const BASE_URL = "http://localhost:5700/";
@@ -91,6 +93,14 @@ export const signup = async (email: string, password: string) => {
 
 export const activateAcc = async (token: string) => {
   const response = await axios.get(BASE_URL + apis.activateAcc + token);
+
+  return response.data;
+};
+
+export const verify = async () => {
+  const response = await axios.get(BASE_URL + apis.verify, {
+    withCredentials: true,
+  });
 
   return response.data;
 };
